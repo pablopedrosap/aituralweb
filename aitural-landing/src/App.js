@@ -2,6 +2,8 @@ import React, { useState, useEffect } from 'react';
 import styled, { createGlobalStyle } from 'styled-components';
 import { Link, Element, animateScroll as scroll } from 'react-scroll';
 import Spline from '@splinetool/react-spline';
+import { FaRocket, FaCheckCircle, FaChartLine, FaUsers, FaComments, FaHandshake, FaBuilding } from 'react-icons/fa';
+import { motion } from 'framer-motion';
 
 
 const GlobalStyle = createGlobalStyle`
@@ -61,8 +63,20 @@ const Button = styled.button`
   }
 `;
 
+const Logo = styled.div`
+  z-index: 2;
+  font-size: 24px;
+  font-weight: bold;
+  color: var(--text-color);
+  display: flex;
+  align-items: center;
 
-const BenefitCard = styled.div`
+  svg {
+    margin-right: 10px;
+  }
+`;
+
+const BenefitCard = styled(motion.div)`
   z-index: 2; 
   background-color: var(--card-bg);
   padding: 30px;
@@ -78,9 +92,108 @@ const BenefitCard = styled.div`
   .icon {
     font-size: 40px;
     margin-bottom: 20px;
+    color: var(--secondary-color);
   }
 `;
 
+const ProcessTimeline = styled.div`
+  z-index: 2;
+  position: relative;
+  max-width: 800px;
+  margin: 0 auto;
+
+  &::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    bottom: 0;
+    left: 50%;
+    width: 2px;
+    background-color: var(--secondary-color);
+  }
+`;
+
+const ProcessStep = styled(motion.div)`
+  z-index: 2;
+  position: relative;
+  margin-bottom: 50px;
+  padding-left: 60px;
+
+  .step-number {
+    position: absolute;
+    left: 0;
+    top: 0;
+    width: 40px;
+    height: 40px;
+    background-color: var(--secondary-color);
+    color: var(--primary-color);
+    border-radius: 50%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font-weight: bold;
+  }
+
+  &:nth-child(even) {
+    padding-left: 0;
+    padding-right: 60px;
+    text-align: right;
+
+    .step-number {
+      left: auto;
+      right: 0;
+    }
+  }
+`;
+
+const PricingCard = styled.div`
+  z-index: 2;
+  background-color: var(--card-bg);
+  padding: 30px;
+  border-radius: 10px;
+  width: 300px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+
+  &:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2);
+  }
+
+  h3 {
+    margin-bottom: 20px;
+    font-size: 24px;
+  }
+
+  .price {
+    font-size: 32px;
+    font-weight: bold;
+    margin-bottom: 20px;
+  }
+
+  .icon {
+    font-size: 48px;
+    color: var(--secondary-color);
+    margin-bottom: 20px;
+  }
+
+  ul {
+    list-style-type: none;
+    padding: 0;
+    margin-bottom: 20px;
+
+    li {
+      margin-bottom: 10px;
+      display: flex;
+      align-items: center;
+
+      svg {
+        margin-right: 10px;
+        color: var(--secondary-color);
+      }
+    }
+  }
+`;
 
 
 const Header = styled.header`
@@ -107,12 +220,6 @@ const NavLinks = styled.nav`
   z-index: 2;
 `;
 
-const Logo = styled.div`
-  z-index: 2;
-  font-size: 24px;
-  font-weight: bold;
-  color: var(--text-color);
-`;
 
 const Section = styled.section`
   z-index: 2;
@@ -149,92 +256,6 @@ const BenefitsGrid = styled.div`
   z-index: 2;
 `;
 
-const ProcessTimeline = styled.div`
-  z-index: 2;
-  position: relative;
-  max-width: 800px;
-  margin: 0 auto;
-
-  &::before {
-    content: '';
-    position: absolute;
-    top: 0;
-    bottom: 0;
-    left: 50%;
-    width: 2px;
-    background-color: var(--secondary-color);
-  }
-`;
-
-const ProcessStep = styled.div`
-  z-index: 2;
-  position: relative;
-  margin-bottom: 50px;
-  padding-left: 60px;
-
-  .step-number {
-    position: absolute;
-    left: 0;
-    top: 0;
-    width: 40px;
-    height: 40px;
-    background-color: var(--secondary-color);
-    color: var(--primary-color);
-    border-radius: 50%;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    font-weight: bold;
-  }
-`;
-
-const Pricing = styled(Section)`
-  z-index: 2;  
-  background-color: var(--primary-color);
-  color: var(--text-color);
-  text-align: center;
-
-  .pricing-grid {
-    z-index: 2;
-    display: flex;
-    justify-content: center;
-    gap: 30px;
-    flex-wrap: wrap;
-  }
-
-  .pricing-card {
-  z-index: 2;
-    background-color: var(--card-bg);
-  padding: 20px;
-  border-radius: 10px;
-  width: 300px;
-  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-  transition: transform 0.3s ease, box-shadow 0.3s ease;
-
-  &:hover {
-    transform: translateY(-5px);
-    box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2);  // Enhanced shadow for better feedback
-  }
-
-  h2 {
-    z-index: 2;
-    margin-bottom: 10px;
-    font-size: 24px;
-  }
-
-  p {
-    z-index: 2;
-    font-size: 18px;
-    margin-bottom: 20px;
-  }
-
-  .price {
-    z-index: 2;
-    font-size: 32px;
-    font-weight: bold;
-  }
-  }
-`;
 
 const Reviews = styled(Section)`
   z-index: 2;
@@ -359,26 +380,6 @@ const Footer = styled.footer`
   }
 `;
 
-const PricingSection = () => (
-  <Pricing>
-    <Container>
-      <h2>Simple Month-to-Month Pricing</h2>
-      <div className="pricing-grid">
-        {pricingData.map((plan, index) => (
-          <div className="pricing-card" key={index}>
-            <h3>{plan.title}</h3>
-            <p className="price">{plan.price}</p>
-            <p>{plan.description}</p>
-            {/* Add Calendly button */}
-            <a href="https://calendly.com/pablopedrosap/ai-prepared-consultation" target="_blank" rel="noopener noreferrer">
-              <Button secondary style={{ marginTop: '20px' }}>Book a Consultation</Button>
-            </a>
-          </div>
-        ))}
-      </div>
-    </Container>
-  </Pricing>
-);
 
 const ReviewsSection = () => (
   <Reviews>
@@ -438,12 +439,6 @@ const FooterSection = () => (
   </Footer>
 );
 
-const pricingData = [
-  { title: 'Consulting', price: '$247/h', description: 'Strategic roadmap development, dedicated project manager, etc.' },
-  { title: 'Business', price: '$5400/mo', description: 'Custom AI agent development, private communication channel, etc.' },
-  { title: 'Enterprise', price: 'Custom Pricing', description: 'Full stack development, ongoing support, multiple AI agents.' }
-];
-
 const reviewsData = [
   { name: 'Eugene Mann', role: 'Product Lead, Stripe', review: 'Partnering with Arsenii has been transformative for our team. His clear and timely communication, along with tailor-made AI solutions, keeps us at the cutting edge.' }
 ];
@@ -492,17 +487,53 @@ const App = () => {
 
 
   const benefitsData = [
-    { icon: '⚡', title: 'Boost Efficiency', description: 'Outsource complex tasks in your business.' },
-    { icon: '✅', title: 'Reduce Mistakes', description: 'Fine-tuned agents require minimal supervision.' },
-    { icon: '🚀', title: 'Stay Ahead', description: 'Adapt quickly to new advancements in AI.' },
-    { icon: '📈', title: 'Scale Seamlessly', description: 'Add more agents as needed without affecting overhead.' }
+    { icon: <FaRocket />, title: 'Accelerate Growth', description: 'Leverage AI to streamline operations and drive rapid business expansion.' },
+    { icon: <FaCheckCircle />, title: 'Enhance Accuracy', description: 'Minimize errors with precisely calibrated AI agents requiring minimal oversight.' },
+    { icon: <FaChartLine />, title: 'Maintain Competitive Edge', description: 'Stay ahead of the curve by swiftly integrating cutting-edge AI advancements.' },
+    { icon: <FaUsers />, title: 'Effortless Scaling', description: 'Expand your AI workforce seamlessly without increasing overhead costs.' }
   ];
 
   const processSteps = [
-    { title: 'AI Readiness Consultation', description: 'We start by understanding your vision and aligning our AI solutions with your business goals.' },
-    { title: 'Transparent Progress Tracking', description: "Your dedicated customer portal allows for real-time progress tracking and feedback." },
-    { title: 'Seamless Integration', description: "We'll embed your new AI agents into your business, ensuring they deliver real value from day one." },
-    { title: 'Ongoing Support', description: "We'll keep adding more agents, refining and expanding their capabilities as your business grows." }
+    { title: 'AI Readiness Assessment', description: 'We begin with a comprehensive evaluation of your business goals and current AI capabilities.' },
+    { title: 'Custom Solution Design', description: 'Our experts craft a bespoke AI strategy tailored to your unique business needs.' },
+    { title: 'Seamless Integration', description: 'We implement your new AI agents, ensuring smooth incorporation into your existing workflows.' },
+    { title: 'Continuous Optimization', description: 'Our team provides ongoing support, refining and expanding your AI capabilities as your business evolves.' }
+  ];
+
+  const pricingData = [
+    { 
+      title: 'Consulting', 
+      price: '$247/h', 
+      icon: <FaComments />,
+      features: [
+        'Strategic roadmap development',
+        'AI readiness assessment',
+        'Custom solution recommendations',
+        'ROI projections'
+      ]
+    },
+    { 
+      title: 'Business', 
+      price: '$5400/mo', 
+      icon: <FaHandshake />,
+      features: [
+        'Custom AI agent development',
+        'Dedicated project manager',
+        'Private communication channel',
+        'Full stack implementation'
+      ]
+    },
+    { 
+      title: 'Enterprise', 
+      price: 'Custom Pricing', 
+      icon: <FaBuilding />,
+      features: [
+        'Multiple AI agent development',
+        'End-to-end solution architecture',
+        '24/7 priority support',
+        'Customized scaling strategies'
+      ]
+    }
   ];
 
   return (
@@ -516,7 +547,9 @@ const App = () => {
       </SplineWrapper>
       <Header sticky={isSticky}>
         <Container style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center'}}>
-          <Logo />
+          <Logo>
+            <FaRocket /> AI Agents
+          </Logo>
           <NavLinks>
             <Link to="hero" smooth={true} duration={500}>Home</Link>
             <Link to="benefits" smooth={true} duration={500}>Benefits</Link>
@@ -539,15 +572,20 @@ const App = () => {
               <Button secondary style={{ marginLeft: '10px' }} onClick={() => scroll.scrollTo('benefits', { smooth: true, duration: 500 })}>Learn More</Button>
             </Container>
           </Hero>
-        </Element>
+      </Element>
 
       <Element name="benefits">
         <Section>
           <Container>
-            <h2 style={{ textAlign: 'center', marginBottom: '50px' }}>Automate Roles, Not Just Tasks</h2>
+            <h2 style={{ textAlign: 'center', marginBottom: '50px' }}>Empower Your Business with AI</h2>
             <BenefitsGrid>
               {benefitsData.map((benefit, index) => (
-                <BenefitCard key={index}>
+                <BenefitCard
+                  key={index}
+                  initial={{ opacity: 0, y: 50 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  transition={{ duration: 0.5, delay: index * 0.1 }}
+                >
                   <div className="icon">{benefit.icon}</div>
                   <h3>{benefit.title}</h3>
                   <p>{benefit.description}</p>
@@ -561,10 +599,16 @@ const App = () => {
       <Element name="process">
         <Section>
           <Container>
-            <h2 style={{ textAlign: 'center', marginBottom: '50px' }}>How It Works: Our Process</h2>
+            <h2 style={{ textAlign: 'center', marginBottom: '50px' }}>Our AI Integration Process</h2>
             <ProcessTimeline>
               {processSteps.map((step, index) => (
-                <ProcessStep key={index}>
+                <ProcessStep
+                  key={index}
+                  initial={{ opacity: 0, x: index % 2 === 0 ? -50 : 50 }}
+                  whileInView={{ opacity: 1, x: 0 }}
+                  viewport={{ once: true }}
+                  transition={{ duration: 0.5 }}
+                >
                   <div className="step-number">{index + 1}</div>
                   <h3>{step.title}</h3>
                   <p>{step.description}</p>
@@ -576,7 +620,26 @@ const App = () => {
       </Element>
 
       <Element name="pricing">
-        <PricingSection />
+        <Section>
+          <Container>
+            <h2 style={{ textAlign: 'center', marginBottom: '50px' }}>Flexible Pricing Solutions</h2>
+            <div style={{ display: 'flex', justifyContent: 'center', gap: '30px', flexWrap: 'wrap' }}>
+              {pricingData.map((plan, index) => (
+                <PricingCard key={index}>
+                  <div className="icon">{plan.icon}</div>
+                  <h3>{plan.title}</h3>
+                  <p className="price">{plan.price}</p>
+                  <ul>
+                    {plan.features.map((feature, fIndex) => (
+                      <li key={fIndex}><FaCheckCircle /> {feature}</li>
+                    ))}
+                  </ul>
+                  <Button secondary>Get Started</Button>
+                </PricingCard>
+              ))}
+            </div>
+          </Container>
+        </Section>
       </Element>
 
       <Element name="reviews">
